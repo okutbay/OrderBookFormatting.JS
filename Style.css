@@ -1,0 +1,38 @@
+﻿:root {
+    --COLOR-text: rgba(240,240,240,1.00);
+    --COLOR-long: rgba(81,156,88,1.00);
+    --COLOR-short: rgba(227,65,93,1.00);
+    --COLOR-textWeak: rgba(214,214,214,0.55);
+    --COLOR-longWeak: rgba(81,156,88,0.55);
+    --COLOR-shortWeak: rgba(227,65,93,0.55);
+}
+
+.strong {
+    color: var(--COLOR-text);
+}
+
+.weak {
+    color: var(--COLOR-textWeak);
+}
+
+.sellstrong {
+    color: var(--COLOR-short);
+}
+
+.sellweak {
+    color: var(--COLOR-shortWeak);
+}
+
+.buystrong {
+    color: var(--COLOR-long);
+}
+
+.buyweak {
+    color: var(--COLOR-longWeak);
+}
+
+html {
+    color: whitesmoke;
+    background-color: black;
+    font-family: 'Inconsolata', monospace;
+}

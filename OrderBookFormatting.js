@@ -3,14 +3,16 @@
 // used to format items in your orderbook related to price changes
 
 function test() {
+    //TEST: splitWeakStrong
     var number1 = "7265.3";
     var number2 = "7264.4";
-
     var parts = new Array(2);
-
     parts = splitWeakStrong(number2, number1);
 
-    console.log(`Weak: ${parts[0]} Strong: ${parts[1]} `);
+    //TEST: splitIntegerPart
+    var number1 = "1.531,4063";
+    parts = new Array(2);
+    parts = splitIntegerPart(number1, ',');
 }
 
 function splitWeakStrong(NumberToSplit, ReferenceNumber) {
@@ -23,9 +25,6 @@ function splitWeakStrong(NumberToSplit, ReferenceNumber) {
     //if lengths are not equal we need to add enough zeros to the front of the short one
     var numberToSplitLength = NumberToSplit.length;
     var referenceNumberLength = ReferenceNumber.length;
-
-    //length difference is the count of zeros to pad
-    var lengthDifference = Math.abs(numberToSplitLength - referenceNumberLength);
 
     if (referenceNumberLength < numberToSplitLength) {
         referenceNumber = PadLeft(ReferenceNumber, numberToSplitLength, '0');
@@ -69,7 +68,7 @@ function splitWeakStrong(NumberToSplit, ReferenceNumber) {
     //get strong part
     var strongPart = String(NumberToSplit).substr(index, numberToSplitLength);
 
-    console.log(`weakPart: ${weakPart} strongPart: ${strongPart}`);
+    console.log(`splitWeakStrong -> weakPart: ${weakPart} strongPart: ${strongPart}`);
 
     //return obtained parts as array
     var parts = new Array(2);
@@ -79,13 +78,13 @@ function splitWeakStrong(NumberToSplit, ReferenceNumber) {
     return parts;
 }
 
-function splitIntegerPart(NumberToSplit) {
+function splitIntegerPart(NumberToSplit, SplitChar) {
 
     var numberToSplit = String(NumberToSplit);
     var numberToSplitLength = NumberToSplit.length;
 
     //get point location (we assumed that decimal seperator is dot (.))
-    var index = numberToSplit.indexOf('.');
+    var index = numberToSplit.indexOf(SplitChar);
     var partOffset = index + 1;
 
     //get weak part
@@ -96,7 +95,7 @@ function splitIntegerPart(NumberToSplit) {
     var strongPart = numberToSplit.substr(0, partOffset); //Math.trunc(NumberToSplit);
     //strongPart = 
 
-    console.log(`weakPart: ${weakPart} strongPart: ${strongPart}`);
+    console.log(`splitIntegerPart -> strongPart: ${strongPart} weakPart: ${weakPart}`);
 
     //return obtained parts as array
     var parts = new Array(2);
@@ -204,12 +203,12 @@ function renderOrderBookHTML() {
             console.log(`${previousprice} > ${price}-=> ${priceweak} | ${pricestrong}`);
 
             //split Qty
-            parts = splitIntegerPart(qty);
+            parts = splitIntegerPart(qty, '.');
             qtyweak = parts[0];
             qtystrong = parts[1];
 
             //split totalQty
-            parts = splitIntegerPart(totalqty);
+            parts = splitIntegerPart(totalqty, '.');
             totalqtyweak = parts[0];
             totalqtystrong = parts[1];
         }

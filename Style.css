@@ -32,8 +32,8 @@
 }
 
 .row {
-    width: 100%;
-    text-align: center;
+    width: 345px;
+    text-align: left;
 }
 
 #price {
@@ -41,6 +41,7 @@
     display: inline-block;
     text-align: right;
     padding-left:10px;
+	padding-right:5px;
 }
 
 #qty {
@@ -48,6 +49,7 @@
     display: inline-block;
     text-align: right;
     padding-left: 10px;
+	padding-right:5px;
 }
 
 #totalqty {
@@ -55,6 +57,7 @@
     display: inline-block;
     text-align: right;
     padding-left: 10px;
+	padding-right:5px;
 }
 
 html {

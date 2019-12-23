@@ -31,6 +31,32 @@
     color: var(--COLOR-longWeak);
 }
 
+.row {
+    width: 100%;
+    text-align: center;
+}
+
+#price {
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+    padding-left:10px;
+}
+
+#qty {
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+    padding-left: 10px;
+}
+
+#totalqty {
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+    padding-left: 10px;
+}
+
 html {
     color: whitesmoke;
     background-color: black;

@@ -213,7 +213,7 @@ function renderOrderBookHTML() {
             totalqtystrong = parts[1];
         }
 
-        var htmltemplate = `<li><span class=\"${ordertype}weak\">${priceweak}</span><span class=\"${ordertype}strong\">${pricestrong}</span><span>&nbsp;&nbsp;&nbsp;</span><span class=\"strong\">${qtystrong}</span><span class=\"weak\">${qtyweak}</span><span>&nbsp;&nbsp;&nbsp;</span><span class=\"strong\">${totalqtystrong}</span><span class=\"weak\">${totalqtyweak}</span></li>`;
+        var htmltemplate = `<div class="row"><div id="price"><span class=\"${ordertype}weak\">${priceweak}</span><span class=\"${ordertype}strong\">${pricestrong}</span></div><div id="qty"><span class=\"strong\">${qtystrong}</span><span class=\"weak\">${qtyweak}</span></div><div id="totalqty"><span class=\"strong\">${totalqtystrong}</span><span class=\"weak\">${totalqtyweak}</span></div></div>`;
         console.log(htmltemplate);
         htmlresult = htmlresult + htmltemplate;
     }

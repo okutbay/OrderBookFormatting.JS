@@ -1,66 +1,61 @@
-// JavaScript source code
-// orderformatting.js
+// OrderFormatting.JS
 // used to format items in your orderbook related to price changes
 
-function test() {
-    //TEST: splitWeakStrong
-    var number1 = "7265.3";
-    var number2 = "7264.4";
-    var parts = new Array(2);
-    parts = splitWeakStrong(number2, number1);
-
-    //TEST: splitIntegerPart
-    var number1 = "1.531,4063";
-    parts = new Array(2);
-    parts = splitIntegerPart(number1, ',');
-}
-
 function splitWeakStrong(NumberToSplit, ReferenceNumber) {
+    const equalizerCharForNumber = '*';
+    const equalizerCharForRef = '#';
+    const maskCharNoChange = '0';
+    const maskCharChanged = '1';
+
     var mask = "";
     var compareResult = false;
+    var maskResult = "";
 
     var numberToSplit = String(NumberToSplit);
     var referenceNumber = String(ReferenceNumber);
-
-    //if lengths are not equal we need to add enough zeros to the front of the short one
     var numberToSplitLength = NumberToSplit.length;
     var referenceNumberLength = ReferenceNumber.length;
 
-    if (referenceNumberLength < numberToSplitLength) {
-        referenceNumber = PadLeft(ReferenceNumber, numberToSplitLength, '0');
-    } else if (numberToSplitLength < referenceNumberLength) {
-        numberToSplit = PadLeft(NumberToSplit, referenceNumberLength, '0');
-    }
+    //console.log(`numberToSplit: ${numberToSplit} referenceNumber: ${referenceNumber}`);
+    //console.log(`NumberToSplit.length: ${numberToSplitLength} ReferenceNumber.length: ${referenceNumberLength}`);
 
-    console.log(`numberToSplit: ${numberToSplit} referenceNumber: ${referenceNumber} `);
-    console.log(`numberToSplit.length: ${numberToSplit.length} `);
+    //if lengths are not equal we need to add enough chars to the front of the short one to equalize
+    if (referenceNumberLength < numberToSplitLength) {
+        referenceNumber = PadLeft(ReferenceNumber, numberToSplitLength, equalizerCharForRef);
+    } else if (numberToSplitLength < referenceNumberLength) {
+        numberToSplit = PadLeft(NumberToSplit, referenceNumberLength, equalizerCharForNumber);
+    }
 
     //create a mask value to see changed digits against to the reference number
     for (var i = numberToSplit.length - 1; i >= 0; i--) {
         var charToCompare = numberToSplit.charAt(i);
         var referenceChar = referenceNumber.charAt(i);
 
-        if (charToCompare == referenceChar /*&& charToCompare != '.'*/) {
+        if (charToCompare == referenceChar) {
+            //no change
             compareResult = true;
         } else {
-            compareResult = false;
+            //there is a change
+            compareResult = false;	
         }
 
         if (compareResult) {
-            mask = "0" + mask;
+            maskResult = maskCharNoChange;
         } else {
-            mask = "1" + mask;
+            maskResult = maskCharChanged;
         }
 
-        console.log(`charToCompare: ${charToCompare} referenceChar: ${referenceChar} compareResult: ${compareResult}`);
+        mask = maskResult + mask;
+
+        //console.log(`charToCompare: ${charToCompare} referenceChar: ${referenceChar} compareResult: ${compareResult}  maskResult: ${maskResult}`);
     }
 
     //mask created
-    console.log(`mask: ${mask} `);
+    //console.log(`mask: ${mask} `);
 
     //the first 1 value in the mask show where the change is beginning
     var index = mask.indexOf('1');
-    console.log(`index: ${index} `);
+    //console.log(`index: ${index} `);
 
     //get weak part
     var weakPart = String(NumberToSplit).substr(0, index);
@@ -68,7 +63,7 @@ function splitWeakStrong(NumberToSplit, ReferenceNumber) {
     //get strong part
     var strongPart = String(NumberToSplit).substr(index, numberToSplitLength);
 
-    console.log(`splitWeakStrong -> weakPart: ${weakPart} strongPart: ${strongPart}`);
+    console.log(`NumberToSplit: ${NumberToSplit} => mask: ${mask} => weakPart: ${weakPart} strongPart: ${strongPart}`);
 
     //return obtained parts as array
     var parts = new Array(2);
@@ -79,7 +74,6 @@ function splitWeakStrong(NumberToSplit, ReferenceNumber) {
 }
 
 function splitIntegerPart(NumberToSplit, SplitChar) {
-
     var numberToSplit = String(NumberToSplit);
     var numberToSplitLength = NumberToSplit.length;
 
@@ -92,10 +86,7 @@ function splitIntegerPart(NumberToSplit, SplitChar) {
     var weakPart = numberToSplit.substr(partOffset, weakPartLength);
 
     //get strong part
-    var strongPart = numberToSplit.substr(0, partOffset); //Math.trunc(NumberToSplit);
-    //strongPart = 
-
-    console.log(`splitIntegerPart -> strongPart: ${strongPart} weakPart: ${weakPart}`);
+    var strongPart = numberToSplit.substr(0, partOffset);
 
     //return obtained parts as array
     var parts = new Array(2);
@@ -105,11 +96,15 @@ function splitIntegerPart(NumberToSplit, SplitChar) {
     return parts;
 }
 
-function PadLeft(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    var result = n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    console.log(`PadLeft result: ${result} `);
+function PadLeft(SourceNumber, Width, PadChar) {
+    const defaultPadChar = '0';
+
+    PadChar = PadChar || defaultPadChar;
+    SourceNumber = SourceNumber + '';
+
+    var result = SourceNumber.length >= Width ? SourceNumber : new Array(Width - SourceNumber.length + 1).join(PadChar) + SourceNumber;
+    //console.log(`PadLeft result: ${result} `);
+
     return result;
 }
 
@@ -120,7 +115,7 @@ function renderOrderBookHTML() {
                 */
 
     var data = [
-        { "price": "7166.9", "qty": "0.75000000", "totalqty": "16.24826053", "ordertype": "sell" },
+        { "price": "17166.9", "qty": "0.75000000", "totalqty": "16.24826053", "ordertype": "sell" },
         { "price": "7166.5", "qty": "0.34000000", "totalqty": "15.49826053", "ordertype": "sell" },
         { "price": "7166.2", "qty": "0.20000000", "totalqty": "15.15826053", "ordertype": "sell" },
         { "price": "7166.0", "qty": "0.15950758", "totalqty": "14.95826053", "ordertype": "sell" },
@@ -133,7 +128,7 @@ function renderOrderBookHTML() {
         { "price": "7163.2", "qty": "1.57450725", "totalqty": "4.12918447", "ordertype": "sell" },
         { "price": "7162.5", "qty": "2.00000000", "totalqty": "2.55467722", "ordertype": "sell" },
         { "price": "7162.4", "qty": "0.22907076", "totalqty": "0.55467722", "ordertype": "sell" },
-        { "price": "7161.6", "qty": "0.02560646", "totalqty": "0.32560646", "ordertype": "sell" },
+        { "price": "27161.6", "qty": "0.02560646", "totalqty": "0.32560646", "ordertype": "sell" },
         { "price": "7161.2", "qty": "0.30000000", "totalqty": "0.30000000", "ordertype": "sell" },
         { "price": "7160.9", "qty": "1.77670476", "totalqty": "1.77670476", "ordertype": "buy" },
         { "price": "7160.0", "qty": "0.60000000", "totalqty": "2.37670476", "ordertype": "buy" },
@@ -167,14 +162,13 @@ function renderOrderBookHTML() {
     var htmlresult = "";
 
     var itemcount = data.length;
-    console.log(`${itemcount}`);
+    //console.log(`data itemcount: ${itemcount}`);
 
     var previousprice = 0;
 
     for (var i = 0; i < itemcount; i++) {
         var obj = data[i];
         for (var key in obj) {
-
             var attrName = key;
             //var attrValue = obj[key];
             price = data[i]["price"];
@@ -193,32 +187,35 @@ function renderOrderBookHTML() {
             if (i == 14 || i == 15) {
                 previousprice = 0;
             }
-
-            var parts = new Array(2);
-
-            //split price
-            parts = splitWeakStrong(price, previousprice);
-            priceweak = parts[0];
-            pricestrong = parts[1];
-            console.log(`${previousprice} > ${price}-=> ${priceweak} | ${pricestrong}`);
-
-            //split Qty
-            parts = splitIntegerPart(qty, '.');
-            qtyweak = parts[0];
-            qtystrong = parts[1];
-
-            //split totalQty
-            parts = splitIntegerPart(totalqty, '.');
-            totalqtyweak = parts[0];
-            totalqtystrong = parts[1];
         }
+		
+		//split price
+		var parts = new Array(2);
+		parts = splitWeakStrong(price, previousprice);
+		priceweak = parts[0];
+		pricestrong = parts[1];
+		//console.log(`STEP ${i} RESULT: ${previousprice}, ${price} => ${priceweak} | ${pricestrong}`);
 
-        var htmltemplate = `<div class="row"><div id="price"><span class=\"${ordertype}weak\">${priceweak}</span><span class=\"${ordertype}strong\">${pricestrong}</span></div><div id="qty"><span class=\"strong\">${qtystrong}</span><span class=\"weak\">${qtyweak}</span></div><div id="totalqty"><span class=\"strong\">${totalqtystrong}</span><span class=\"weak\">${totalqtyweak}</span></div></div>`;
-        console.log(htmltemplate);
+		//split Qty
+		var parts = new Array(2);
+		parts = splitIntegerPart(qty, '.');
+		qtyweak = parts[0];
+		qtystrong = parts[1];
+        //console.log(`splitIntegerPart -> strongPart: ${qtystrong} weakPart: ${qtyweak}`);
+
+		//split totalQty
+		var parts = new Array(2);
+		parts = splitIntegerPart(totalqty, '.');
+		totalqtyweak = parts[0];
+		totalqtystrong = parts[1];	
+        //console.log(`splitIntegerPart -> strongPart: ${totalqtystrong} weakPart: ${totalqtyweak}`);
+
+        var htmltemplate = `<div id="price"><span class=\"${ordertype}weak\">${priceweak}</span><span class=\"${ordertype}strong\">${pricestrong}</span></div><div id="qty"><span class=\"strong\">${qtystrong}</span><span class=\"weak\">${qtyweak}</span></div><div id="totalqty"><span class=\"strong\">${totalqtystrong}</span><span class=\"weak\">${totalqtyweak}</span></div>`;
+        //console.log(htmltemplate);
         htmlresult = htmlresult + htmltemplate;
     }
 
-    var result = "<ul>" + htmlresult + "</ul>";
+    var result = "" + htmlresult + "";
 
     document.getElementById("orderbook").innerHTML = result;
 }

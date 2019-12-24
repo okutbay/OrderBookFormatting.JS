@@ -11,15 +11,12 @@
     <link href="style.css" rel="stylesheet" />
     <script src="OrderBookFormatting.js"></script>
 
-    <title>Render Orderbook?</title>
-    <style>
- 
-    </style>
+    <title>Render Orderbook</title>
 </head>
 <body onload="test();">
+    <!---->
     <p>
-        Render Orderbook?
-        <br />
+        Render Orderbook?<br />
         <input type="button" id="btnTest" name="btnTest" onclick="renderOrderBookHTML();" value="RENDER" />
     </p>
     <hr />
@@ -27,6 +24,35 @@
     <div id="orderbook">
     </div>
 </body>
-
 </html>
 
+<script type="text/javascript">
+    function test() {
+        console.log(`>>> BEGIN TEST`);
+
+        //TEST: splitWeakStrong
+        var ref = "7265.3";
+        var somenumber = "17264.4";
+
+        var ref = "17264.4";
+        var somenumber = "17265.3";
+
+        var parts = new Array(2);
+        parts = splitWeakStrong(somenumber, ref);
+        priceweak = parts[0];
+        pricestrong = parts[1];
+
+        var refhtml = `<div id="price"><span class=\"buyweak\"></span><span class=\"buystrong\">${ref}</span></div>`;
+        var somenumbertemplate = `<div id="price"><span class=\"buyweak\">${priceweak}</span><span class=\"buystrong\">${pricestrong}</span></div>`;
+
+        var result = refhtml + somenumbertemplate + "";
+
+        document.getElementById("orderbook").innerHTML = result;
+
+        //TEST: splitIntegerPart
+        var number1 = "1.531,4063";
+        parts = new Array(2);
+        parts = splitIntegerPart(number1, ',');
+        console.log(`<<< END TEST`);
+    }
+</script>

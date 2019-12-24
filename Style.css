@@ -1,4 +1,10 @@
-﻿:root {
+﻿html {
+    color: whitesmoke;
+    background-color: black;
+    font-family: 'Inconsolata', monospace;
+}
+
+:root {
     --COLOR-text: rgba(240,240,240,1.00);
     --COLOR-long: rgba(81,156,88,1.00);
     --COLOR-short: rgba(227,65,93,1.00);
@@ -31,13 +37,13 @@
     color: var(--COLOR-longWeak);
 }
 
-.row {
-    width: 345px;
+#orderbook {
+    width: 300px;
     text-align: left;
 }
 
 #price {
-    width: 100px;
+    width: 55px;
     display: inline-block;
     text-align: right;
     padding-left:10px;
@@ -58,10 +64,4 @@
     text-align: right;
     padding-left: 10px;
 	padding-right:5px;
-}
-
-html {
-    color: whitesmoke;
-    background-color: black;
-    font-family: 'Inconsolata', monospace;
 }
